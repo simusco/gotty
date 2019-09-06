@@ -5,5 +5,8 @@ import "simusco.com/gotty"
 type TestService struct {
 }
 
-func (self *TestService) Execute(channel *gotty.Channel, data interface{}) {
+func (t *TestService) Execute(context *gotty.HandlerContext, data interface{}) {
+
+	context.Write(nil)
+
 }

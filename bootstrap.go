@@ -71,7 +71,7 @@ func (self *Bootstrap) RunServer() {
 
 		go func(ch *Channel) {
 			ch.runEventLoop()
-			ch.Close()
+			_ = ch.Close()
 
 			self.mutexConns.Lock()
 			delete(self.conns, conn)

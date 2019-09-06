@@ -3,7 +3,6 @@ package gotty
 import (
 	"errors"
 	"log"
-	"simusco.com/gotty/examples/live"
 )
 
 type InboundHandler interface {
@@ -23,15 +22,22 @@ type Handler interface {
 }
 
 type ServiceHandler struct {
-	Services map[int32]Service
+	Services     map[int32]Service
+	GetEventCode func(data interface{}) int32
 }
 
 func (sh *ServiceHandler) ChannelRead(c *HandlerContext, data interface{}) error {
-	vo := data.(*live.ParamVO)
-	if service, ok := sh.Services[vo.Event]; ok {
-		service.Execute(c.p.ch, data)
+	event := sh.GetEventCode(data)
+
+	if event == -1 {
+		return errors.New("丢失了Event参数")
+	}
+
+	if service, ok := sh.Services[event]; ok {
+		service.Execute(c, data)
 		return nil
 	}
+
 	return errors.New("找不到服务实现")
 }
 

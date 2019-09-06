@@ -15,6 +15,13 @@ func main() {
 	}
 
 	serviceHandler := &gotty.ServiceHandler{
+		GetEventCode: func(data interface{}) int32 {
+			if p, ok := data.(*live.ParamVO); ok {
+				return p.Event
+			} else {
+				return -1
+			}
+		},
 		Services: map[int32]gotty.Service{
 			1: &service.TestService{},
 			2: &service.TestService{},
