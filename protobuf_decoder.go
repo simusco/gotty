@@ -30,5 +30,5 @@ func (self *ProtobufDecoder) ChannelRead(c *HandlerContext, data interface{}) er
 }
 
 func (self *ProtobufDecoder) ErrorCaught(c *HandlerContext, err error) {
-	panic("implement me")
+	log.Println("解析参数出现错误")
 }

@@ -30,7 +30,8 @@ func (sh *ServiceHandler) ChannelRead(c *HandlerContext, data interface{}) error
 	event := sh.GetEventCode(data)
 
 	if event == -1 {
-		return errors.New("丢失了Event参数")
+		sh.ErrorCaught(c, errors.New("丢失了Event参数"))
+		return nil
 	}
 
 	if service, ok := sh.Services[event]; ok {
@@ -38,7 +39,9 @@ func (sh *ServiceHandler) ChannelRead(c *HandlerContext, data interface{}) error
 		return nil
 	}
 
-	return errors.New("找不到服务实现")
+	sh.ErrorCaught(c, errors.New("找不到服务实现"))
+
+	return nil
 }
 
 func (sh *ServiceHandler) ChannelActive(c *HandlerContext) error {
@@ -47,4 +50,5 @@ func (sh *ServiceHandler) ChannelActive(c *HandlerContext) error {
 }
 
 func (sh *ServiceHandler) ErrorCaught(c *HandlerContext, err error) {
+	log.Printf("%v", err)
 }

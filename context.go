@@ -70,7 +70,14 @@ func (h *HandlerContext) FireChannelRead(data interface{}) {
 	hc := h.findNextInbound()
 	if hc != nil {
 		bb := hc.handler.(InboundHandler)
-		err := bb.ChannelRead(hc, data)
-		log.Printf("read error : %v", err)
+		_ := bb.ChannelRead(hc, data)
+	}
+}
+
+func (h *HandlerContext) FireChannelRead(data interface{}) {
+	hc := h.findNextInbound()
+	if hc != nil {
+		bb := hc.handler.(InboundHandler)
+		_ := bb.ChannelRead(hc, data)
 	}
 }
